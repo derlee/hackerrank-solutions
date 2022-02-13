@@ -8,24 +8,24 @@ namespace Interview_Preparation_Kit.String_Manipulation.Common_Child
         // Complete the commonChild function below.
         private static int commonChild(string s1, string s2)
         {
-            int[,] letterTable = new int[s1.Length, s2.Length];
-
-            for (int i = 1; i < s1.Length; i++)
+   int n1 = s1.Length + 1, n2 = s2.Length + 1;
+    int[,] dp = new int[n1, n2];
+    for (int i = 1; i < n1; ++i)
+    {
+        for (int j = 1; j < n2; ++j)
+        {
+            if (s1[i - 1] == s2[j - 1])
             {
-                for (int j = 1; j < s2.Length; j++)
-                {
-                    if (s1[i] == s2[j])
-                    { 
-                        letterTable[i, j] = letterTable[i - 1, j - 1] + 1;
-                    }
-                    else
-                    { 
-                        letterTable[i, j] = Math.Max(letterTable[i, j - 1], letterTable[i - 1, j]);
-                    }
-                }
+                dp[i, j] = dp[i - 1, j - 1] + 1;
             }
-
-            return letterTable[s1.Length - 1, s2.Length - 1];
+            else
+            {
+                dp[i, j] = Math.Max(dp[i - 1, j], dp[i, j - 1]);
+            }
+        }
+    }
+ 
+    return dp[n1 - 1, n2 - 1];
         }    
 
         private static void Main(string[] args)
