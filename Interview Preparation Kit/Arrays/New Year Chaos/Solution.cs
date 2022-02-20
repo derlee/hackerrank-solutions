@@ -8,38 +8,38 @@ namespace Interview_Preparation_Kit.Arrays.New_Year_Chaos
         // Complete the minimumBribes function below.
         private static void minimumBribes(int[] q)
         {
-            int sumBribes = 0,
-                aux = 0;
+             var cl = 0; 
+        for (int index = q.Count-1; index > 0; index--)
+        {
+            if (q[index] == index + 1)
+                 continue;
 
-            for (int index = q.Length - 1; index > 0; index--)
+            var curValue =0;
+        
+            if (q[index-1] == index + 1 )
             {
-                if (q[index] == index + 1)
-                    continue;
+                cl += 1;
+                curValue=q[index-1];
+                q[index-1]=q[index];
+                q[index]=curValue; 
+               
+            } 
+            else  if (q[index-2] == index + 1 )
+            {                
+                cl += 2;
+                curValue=q[index-2];
+                q[index-2]=q[index-1];
+                q[index-1]=q[index];
+                q[index]=curValue; 
 
-                if (q[index - 1] == index + 1)
-                {
-                    aux = q[index - 1];
-                    q[index - 1] = q[index];
-                    q[index] = aux;
-                    sumBribes++;
-                    continue;
-                }
-
-                if (q[index - 2] == index + 1)
-                {
-                    aux = q[index - 2];
-                    q[index - 2] = q[index - 1];
-                    q[index - 1] = q[index];
-                    q[index] = aux;
-                    sumBribes += 2;
-                    continue;
-                }
-
+            }
+            else  
+            {
                 Console.WriteLine("Too chaotic");
                 return;
-            }
-
-            Console.WriteLine(sumBribes);
+            } 
+        } 
+        Console.WriteLine(cl);
         }
 
         private static void Main(string[] args)
