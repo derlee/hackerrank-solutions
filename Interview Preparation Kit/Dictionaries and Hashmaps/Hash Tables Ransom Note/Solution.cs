@@ -8,36 +8,28 @@ namespace Interview_Preparation_Kit.Dictionaries_and_Hashmaps.Hash_Tables_Ransom
     {
         private static void checkMagazine(string[] magazine, string[] note)
         {
-            var magazineDict = new Dictionary<string, int>();
+            var dicM = new Dictionary<string, int>(); 
 
-            //Create a dictionary with the magazine words and count of occurencies
-            for (int index = 0; index < magazine.Length; index++)
+            foreach (var s in magazine)
             {
-                if (!magazineDict.ContainsKey(magazine[index]))
-                {
-                    magazineDict.Add(magazine[index], 1);
-                }
+                if (dicM.TryGetValue(s, out int value)) 
+                    dicM[s] += 1; 
                 else
-                {
-                    magazineDict[magazine[index]]++;
-                }
-            }
+                    dicM.Add(s, 1);
+            } 
 
-            for (int index = 0; index < note.Length; index++)
+            foreach (var n in note)
             {
-                magazineDict.TryGetValue(note[index], out int auxValue);
-
-                if (auxValue == 0)
+                if (!dicM.TryGetValue(n, out int value) || value<=0)
                 {
                     Console.WriteLine("No");
                     return;
-                }
+                } 
                 else
                 {
-                    magazineDict[note[index]]--;
+                   dicM[n]--; 
                 }
             }
-
             Console.WriteLine("Yes");
         }
 
