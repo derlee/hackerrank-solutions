@@ -10,93 +10,70 @@ namespace Interview_Preparation_Kit.Sorting.Fraudulent_Activity_Notifications
     class Solution
     {
         // Complete the activityNotifications function below.
-        static int activityNotifications(int[] expenditure, int d)
+     static int activityNotifications(List<int> expenditure, int d)
+    {
+        int countNotifications = 0;
+        decimal median = 0;
+        bool odd = false;
+
+        if (d % 2 != 0) odd = true; 
+
+        int[] counting = new int[expenditure.Max() + 1];
+
+        //initialize counting array
+        for (int index = 0; index < d; index++)
         {
-            int countNotifications = 0;
-            decimal median = 0;
-            int[] lastExpenditures = new int[d];
-            bool odd = false;
-
-            if (d % 2 != 0)
-            { 
-                odd = true;
-            }
-
-            int maxValue = getMaxValue(expenditure);
-            int[] counting = new int[maxValue + 1];
-
-            //initialize counting array
-            for (int index = 0; index < d; index++)
-            {
-                counting[expenditure[index]]++;
-            }
-
-            for (int index = d; index < expenditure.Length; index++)
-            {
-                Array.Copy(expenditure, index - d, lastExpenditures, 0, d);
-
-                median = getMedianValue(counting, d, odd);
-
-                if (expenditure[index] >= (median * 2))
-                {
-                    countNotifications++;
-                }
-
-                counting[expenditure[index]]++;
-                counting[expenditure[index - d]]--;
-            }
-
-            return countNotifications;
+            counting[expenditure[index]]++;
         }
 
-        static int getMaxValue(int[] expenditure)
+        for (int index = d; index < expenditure.Count; index++)
         {
-            int maxValue = expenditure[0];
 
-            for (int index = 1; index < expenditure.Length; index++)
+            median = getMedianValue(counting, d, odd);
+
+            if (expenditure[index] >= (median * 2))
             {
-                if (expenditure[index] > maxValue)
-                {
-                    maxValue = expenditure[index];
-                }
+                countNotifications++;
             }
 
-            return maxValue;
+            counting[expenditure[index]]++;
+            counting[expenditure[index - d]]--;
         }
 
-        static decimal getMedianValue(int[] counting, int d, bool odd)
+        return countNotifications;
+    }
+
+    static decimal getMedianValue(int[] counting, int d, bool odd)
+    {
+        int medianCount = d / 2, //how much to count to find the median element
+            currentCount = 0,
+            medianNumber = 0; //the number at the median position
+
+        if (odd) medianCount++;
+
+
+        for (int index = 0; index < counting.Length; index++)
         {
-            int medianCount = d / 2, //how much to count to find the median element
-                currentCount = 0,
-                medianNumber = 0; //the number at the median position
+            currentCount += counting[index];
 
-            if (odd)
+            if (currentCount >= medianCount)
             {
-                medianCount++;
-            }
-
-            for (int index = 0; index < counting.Length; index++)
-            {
-                currentCount += counting[index];
-
-                if (currentCount >= medianCount)
+                if (medianNumber > 0)
                 {
-                    if (medianNumber > 0)
-                    {
-                        return (medianNumber + index) / 2m;
-                    }
+                    return (medianNumber + index) / 2m;
+                }
 
-                    medianNumber = index;
+                medianNumber = index;
 
-                    if (odd || currentCount > medianCount)
-                    { 
-                        return medianNumber;
-                    }
+                if (odd || currentCount > medianCount)
+                {
+                    return medianNumber;
                 }
             }
-
-            return medianNumber;
         }
+
+        return medianNumber;
+    }
 
         static void Main(string[] args)
         {
