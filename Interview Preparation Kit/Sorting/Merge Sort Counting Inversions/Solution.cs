@@ -51,7 +51,7 @@ namespace Interview_Preparation_Kit.Sorting.Merge_Sort_Counting_Inversions
                 {
                     merged[mergedIndex] = arrayLeft[leftIndex];
                     leftIndex++;
-                    countSwaps++;
+                   // countSwaps++;
                 }
 
                 mergedIndex++;
